@@ -1,0 +1,45 @@
+{
+    "EG_Feed": {
+        "auth_type": "valid_token",
+        "request": {
+            "resource": "FeedTemplates",
+            "namespace": "template.home",
+            "name": "EG",
+            "view": "default"
+        },
+        "expectations": {
+            "min_sections": 1,
+            "expected_status": "OK",
+            "allowed_item_types": ["hero", "banner", "cover", "category","shop","review","user"]
+        }
+    },
+    "US_Feed": {
+        "auth_type": "valid_token",
+        "request": {
+            "resource": "FeedTemplates",
+            "namespace": "template.home",
+            "name": "US",
+            "view": "default"
+        },
+        "expectations": {
+            "min_sections": 1,
+            "expected_status": "OK",
+            "allowed_item_types": ["hero", "banner", "cover", "category","shop","review","user"]
+        }
+    },
+    "UAE_Feed": {
+        "auth_type": "valid_token",
+        "request": {
+            "resource": "FeedTemplates",
+            "namespace": "template.home",
+            "name": "UAE",
+            "view": "default"
+        },
+        "expectations": {
+            "min_sections": 1,
+            "expected_status": "OK",
+            "allowed_item_types": ["hero", "banner", "cover", "category","shop","review","user"]
+        }
+    }
+
+}

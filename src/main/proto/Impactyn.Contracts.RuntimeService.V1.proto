@@ -1,0 +1,69 @@
+syntax = 'proto3';
+package Impactyn.Contracts.RuntimeService.V1;
+
+service RuntimeService {
+    // Version returns the runtime name, runtime version, and runtime API version.
+    rpc Version(VersionRequest) returns (VersionResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc Execute(ExecuteRequest) returns (ExecuteResponse) {}
+    rpc CreateOrUpdate(CreateOrUpdateRequest) returns (CreateOrUpdateResponse) {}
+}
+
+message VersionRequest {
+    // Version of the kubelet runtime API.
+    string version = 1;
+}
+
+message VersionResponse {
+    // Version of the API.
+    string version = 1;
+}
+
+message GetRequest {
+    string apiVersion = 1;
+    string namespace = 2;
+    string resource = 3;
+    string name = 4;
+    string view = 5;
+}
+
+message GetResponse {
+    bytes content = 1;
+    map<string,string> headers = 2;
+}
+
+message DeleteRequest {
+    string apiVersion = 1;
+    string namespace = 2;
+    string resource = 3;
+    string name = 4;
+}
+
+message DeleteResponse {
+}
+
+message CreateOrUpdateRequest {
+    string apiVersion = 1;
+    string namespace = 2;
+    string resource = 3;
+    string name = 4;
+    bytes content = 5;
+}
+
+message CreateOrUpdateResponse {
+    bytes content = 1;
+}
+
+message ExecuteRequest {
+    string apiVersion = 1;
+    string namespace = 2;
+    string resource = 3;
+    string name = 4;
+    string action = 5;
+    bytes content = 6;
+}
+
+message ExecuteResponse {
+    bytes content = 1;
+}

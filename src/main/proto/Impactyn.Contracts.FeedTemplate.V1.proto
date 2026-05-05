@@ -1,0 +1,173 @@
+﻿syntax = 'proto3';
+import "Impactyn.Contracts.Common.V1.proto";
+import "google/protobuf/timestamp.proto";
+package Impactyn.Contracts.FeedTemplate.V1;
+
+message GetFeedRequest {
+  Impactyn.Contracts.Common.V1.ResourceId FeedTemplateId = 1;
+}
+
+message GetFeedResponse {
+  Feed Feed = 1;
+}
+
+message Feed {
+  repeated FeedItem Items = 1;
+}
+
+message FeedItem {
+  string Type = 1;
+  bytes PropertyBag = 2;
+}
+
+message SectionItemProperties {
+  string Orientation = 1;
+  string Title = 2;
+  repeated FeedItem Items = 3;
+  int32 Rank = 4;
+}
+
+message CategoryProperties{
+	//string DisplayName = 1;
+	Impactyn.Contracts.Common.V1.ResourceId SourceFeed = 2;
+	CategoryProperties Subcategory = 4;
+}
+
+message CategoryItemProperties {
+  // Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  Impactyn.Contracts.Common.V1.ArtifactToken Image = 2;
+  string Title = 3;
+  int32 Rank = 4;
+  //CategoryProperties Category = 5;
+  //Impactyn.Contracts.Common.V1.CatalogItem Country = 6;
+  string Route = 7;
+}
+
+message BannerItemProperties {
+  Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  Impactyn.Contracts.Common.V1.ArtifactToken Image = 2;
+  // string Title = 3;
+  int32 Rank = 4;
+  string BadgeText = 5;
+  string BadgeColor = 6;
+  sfixed32 Rating = 7;
+  Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 8;
+  int64 ReviewsCount = 9;
+  bool IsShowBadge = 10;
+  Impactyn.Contracts.Common.V1.ResourceToken Reviews = 11;
+  string CheckoutLink = 12;
+}
+
+message CoverItemProperties {
+  Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  Impactyn.Contracts.Common.V1.ArtifactToken Image = 2;
+  string Title = 3;
+  int32 Rank = 4;
+  string BadgeText = 5;
+  string BadgeColor = 6;
+  sfixed32 Rating = 7;
+  Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 8;
+  sfixed64 ReviewsCount = 9;
+  bool IsShowBadge = 10;
+  Impactyn.Contracts.Common.V1.ResourceToken Reviews = 11;
+  string CheckoutLink = 12;
+}
+
+message HeroItemProperties {
+  Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  Impactyn.Contracts.Common.V1.ArtifactToken Image = 2;
+  string Title = 3;
+  int32 Rank = 4;
+  string BadgeText = 5;
+  string BadgeColor = 6;
+  string Subtitle = 7;
+  sfixed32 Rating = 8;
+  sfixed64 ReviewsCount = 9;
+  bool IsShowMenu = 10;
+  bool IsShowReviews = 11;
+  bool IsShowBadge = 12;
+  string CheckoutLink = 13;
+  Impactyn.Contracts.Common.V1.ResourceToken Reviews = 14;
+  bool IsShowCheckout = 15;
+}
+
+message ShopItemProperties {
+  Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  Impactyn.Contracts.Common.V1.ArtifactToken Image = 2;
+  string Title = 3;
+  sfixed32 Rating = 4;
+  Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 5;
+  sfixed64 ReviewsCount = 6;
+  string CheckoutLink = 7;
+  int32 Rank = 8;
+  Impactyn.Contracts.Common.V1.ResourceToken Reviews = 9;
+  bool IsShowCheckout = 10;
+}
+
+message ReviewItemProperties {
+  Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  Impactyn.Contracts.Common.V1.ArtifactToken Image = 2;
+  string Title = 3;
+  sfixed32 Rank = 4;
+  string BadgeText = 5;
+  string BadgeColor = 6;
+  Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 7;
+  bool IsShowBadge = 8;
+}
+
+message UserItemProperties {
+  Impactyn.Contracts.Common.V1.ResourceToken Resource = 1;
+  string Title = 2;
+  sfixed32 Rank = 3;
+  //string BadgeText = 4;
+  //string BadgeColor = 5;
+  Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 6;
+  //bool IsShowBadge = 7;
+}
+
+message BannerChatItemProperties {
+    Impactyn.Contracts.Common.V1.ResourceToken Resource  = 1;
+    string Title = 2;  
+    int64 Followers = 3;  
+    sfixed32 Rating = 4;  
+    int64 ReviewsCount = 5;  
+    Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 6;  
+    Money Price = 7;  
+    string CheckoutLink = 8;  
+    int32 Rank = 9;
+	Impactyn.Contracts.Common.V1.ResourceToken Reviews = 10;
+    bool IsShowFollowers = 11;
+	bool IsShowRating = 12;
+	bool IsShowReviewsCount = 13;
+}
+
+message CardChatItemProperties {
+    Impactyn.Contracts.Common.V1.ResourceToken Resource  = 1;
+    string Title = 2;  
+    int64 Followers = 3;  
+    sfixed32 Rating = 4;  
+    int64 ReviewsCount = 5;  
+    Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 6;  
+    int32 Rank = 7;
+	Impactyn.Contracts.Common.V1.ResourceToken Reviews = 8;
+	bool IsShowFollowers = 9;
+	bool IsShowRating = 10;
+	bool IsShowReviewsCount = 11;
+}
+
+message ReviewChatItemProperties {
+    Impactyn.Contracts.Common.V1.ResourceToken Resource  = 1;
+    string Title = 2;  
+    sfixed32 Rating = 3;  
+    Impactyn.Contracts.Common.V1.ArtifactToken IconImage = 4;  
+    google.protobuf.Timestamp Date = 5;  
+    string CheckoutLink = 6;  
+    Impactyn.Contracts.Common.V1.ArtifactToken Thumbnail = 7;  
+    int32 Rank = 8;
+	bool IsShowRating = 9;
+}
+
+message Money{
+	float Amount = 1;
+	string CurrencyCode = 2;
+}

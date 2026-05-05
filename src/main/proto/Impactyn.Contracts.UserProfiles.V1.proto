@@ -1,0 +1,71 @@
+syntax = 'proto3';
+import "Impactyn.Contracts.Common.V1.proto";
+import "google/protobuf/timestamp.proto";
+package Impactyn.Contracts.UserProfiles.V1;
+
+message UserProfile{
+	string DisplayName = 1;
+	string HomeRegion = 2;
+	Impactyn.Contracts.Common.V1.ArtifactToken ProfileImage = 3;
+	sfixed64 Followers = 4;
+	AuthorScore AuthorScore = 5;
+	Impactyn.Contracts.Common.V1.ResourceToken Feed = 6;
+	string Bio = 7;
+	string SelfLink = 8;
+	bool IsBanned = 9;
+	Impactyn.Contracts.Common.V1.Date Birthdate = 10;
+	string Gender = 11;
+	Impactyn.Contracts.Common.V1.DateTime JoinDate = 12;
+	sfixed64 OriginalId = 13;
+	UserAmbassadorship Ambassadorship = 14;
+}
+
+message CreateOrUpdateUserProfileRequest{
+	Impactyn.Contracts.UserProfiles.V1.UserProfile Item=1;
+}
+
+message CreateOrUpdateUserProfileResponse{
+	Impactyn.Contracts.UserProfiles.V1.UserProfile Item=1;
+}
+
+message UpdateProfileImageRequest{
+	string Base64Image = 1;
+	string Extension = 2;
+}
+
+message GetUserProfileRequest{
+}
+
+message GetUserProfileResponse{
+	Impactyn.Contracts.UserProfiles.V1.UserProfile Item=1;
+}
+
+message PublicUserProfile{
+	string DisplayName = 1;
+	Impactyn.Contracts.Common.V1.ResourceToken Feed = 2;
+	Impactyn.Contracts.Common.V1.ArtifactToken ProfileImage = 3;
+	AuthorScore AuthorScore = 4;
+    sfixed64 Followers = 5;
+	string Bio = 6;
+	string SelfLink = 7;
+	PublicUserAmbassadorship Ambassadorship = 8;
+}
+
+message AuthorScore{
+	sfixed64 Agree = 1;
+	sfixed64 Disagree = 2;
+}
+
+message UserAmbassadorship{
+	string RequestStatus = 1;
+	UserAmbassadorshipLevel Level = 2;
+}
+
+message PublicUserAmbassadorship{
+	UserAmbassadorshipLevel Level = 1;
+}
+
+message UserAmbassadorshipLevel{
+	string DisplayName = 1;
+	string Level = 2;
+}

@@ -1,0 +1,66 @@
+﻿syntax = 'proto3';
+import "Impactyn.Contracts.Common.V1.proto";
+import "Impactyn.Contracts.FeedTemplate.V1.proto";
+
+package Impactyn.Contracts.Assistants.V1;
+
+message AskRequest{
+	uint64 LastMessageId = 1;
+	string Message = 2;
+	Impactyn.Contracts.Common.V1.ResourceId ChatId = 3;
+	Impactyn.Contracts.Common.V1.ResourceId ResourceId = 4;
+}
+
+message AskResponse{
+	repeated Message Thread = 1;
+}
+
+message CreateChatRequest{
+}
+
+message CreateChatResponse{
+  Impactyn.Contracts.Common.V1.ResourceId ChatId = 1;
+}
+
+message GetChatListResponse{
+  repeated Chat Chats = 1;
+}
+
+message GetAssistantConfigRequest{
+   Impactyn.Contracts.Common.V1.ResourceId ResourceId = 1;
+}
+
+message GetAssistantConfigResponse{
+    string Description = 1;
+    repeated AssistantConfigPrompt Prompts = 2;
+} 
+
+message Message{
+	uint64 Id = 1;
+	string Role = 2;
+	MessageContent User = 3;
+	MessageContent Assistant = 4;
+}
+
+message MessageContent{
+	string Type = 1;
+	TextMessageContent Text = 2;
+	repeated Impactyn.Contracts.Common.V1.ResourceId ResourceIds = 3;
+	Impactyn.Contracts.FeedTemplate.V1.Feed feed = 4;
+}
+
+message TextMessageContent
+{
+	string Message = 1;
+}
+
+message Chat{
+   Impactyn.Contracts.Common.V1.ResourceId Id = 1;
+   string Title = 2;
+}
+
+message AssistantConfigPrompt{
+    string Title = 1;
+    string Prompt = 2;
+    Impactyn.Contracts.Common.V1.ResourceId ResourceId = 3;
+} 

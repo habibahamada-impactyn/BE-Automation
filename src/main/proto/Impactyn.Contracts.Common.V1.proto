@@ -1,0 +1,113 @@
+syntax = 'proto3';
+import "google/protobuf/timestamp.proto";
+package Impactyn.Contracts.Common.V1;
+
+message CallbackContext{
+	ResourceId ResourceId=1;
+	string Action=2;
+	bytes Content=3;
+}
+
+message ResourceId{
+		string resourceType=1;
+		string namespace=2;
+		string name=3;
+}
+
+message StringList{
+		repeated string Values=1;
+}
+
+message NoContent{
+}
+
+message ResourceState{
+		google.protobuf.Timestamp StateEntryTime=1;
+		string state=2;
+}
+
+message ResourceMetadata{
+		ResourceId resourceId =1;
+		string  instanceId=2;
+		//fixed64 version=3;
+		google.protobuf.Timestamp createdAt=4;
+		google.protobuf.Timestamp lastModifiedAt=5;
+		google.protobuf.Timestamp deletedAt=6;
+		ResourceState state=7;
+		string resourceVersion=8;
+}
+
+message ResourceToken{
+		ResourceId resourceId =1;
+		string sas=2;
+}
+
+message ArtifactToken{
+	string Link = 1;
+	google.protobuf.Timestamp NotAfter = 2;
+	google.protobuf.Timestamp RefreshAt = 3;
+}
+
+message BlobProperties{
+	string StorageAccount = 1;
+	string ContainerName = 2;
+	string DirectoryName = 3;
+	string BlobName = 4;
+	string Region = 5;
+}
+
+
+message CatalogResponse{
+	repeated CatalogItem Items = 1;
+}
+
+message CatalogItem{
+	string Title = 1;
+	ResourceId ResourceId =2;
+}
+
+message ResourceIdList{
+	repeated ResourceId Items = 1;
+}
+
+message Date{
+	uint32 Year = 1;
+	uint32 Month = 2;
+	uint32 Day = 3;
+}
+
+message DateTime{
+	uint32 Year = 1;
+	uint32 Month = 2;
+	uint32 Day = 3;
+	uint32 Hour = 4;
+	uint32 Minute = 5;
+	uint32 Second = 6;
+}
+
+message KeyValuePair{
+	string Key = 1;
+	string Value =2;
+} 
+
+message NullableBool{
+	bool Value = 1;
+}
+
+message NullableInt{
+	sfixed32 Value = 1;
+}
+
+message NullableLong{
+	sfixed64 Value = 1;
+}
+
+message ListRequest{
+	NullableBool IncludeHidden = 1;
+	NullableBool IncludeVisible = 2;
+}
+
+
+
+
+
