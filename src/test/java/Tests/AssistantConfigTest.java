@@ -9,6 +9,8 @@ import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1.GetAssista
 import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1.GetAssistantConfigResponse;
 import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1.AssistantConfigPrompt;
 
+import Impactyn.Contracts.Common.V1.ImpactynContractsCommonV1;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -57,5 +59,46 @@ public class AssistantConfigTest extends BaseTest{
             Assert.assertFalse(prompt.hasResourceId(),
                     "Global prompt '" + prompt.getTitle() + "' should not have a ResourceId assigned!");
         }
+    }
+
+    @Test(description = "Verify config is returned based on specific ResourceId")
+    public void testFetchConfigWithResourceId() throws InvalidProtocolBufferException {
+        ImpactynContractsCommonV1.ResourceId myResourceId = ImpactynContractsCommonV1.ResourceId.newBuilder()
+                .setResourceType("metaobjects")
+                .setNamespace("brgr.eg")
+                .setName("default")
+                .build();
+
+        // 1. Build the Request with ResourceId
+        GetAssistantConfigRequest configRequest = GetAssistantConfigRequest.newBuilder()
+                .setResourceId(myResourceId)
+                .build();
+
+        // 2. Wrap in ExecuteRequest
+        ExecuteRequest exec = ExecuteRequest.newBuilder()
+                .setApiVersion("V1")
+                .setResource("Assistants")
+                .setAction("GetAssistantConfig")
+                .setContent(configRequest.toByteString())
+                .build();
+
+        // 3. Execute
+        ExecuteResponse resp = authenticatedStub.execute(exec);
+        GetAssistantConfigResponse configResponse = GetAssistantConfigResponse.parseFrom(resp.getContent());
+
+        System.out.println(configResponse);
+
+        // 4. Assertions
+        Assert.assertNotNull(configResponse);
+
+        // Check if the prompts returned are specific to the resource
+        // Usually, resource-specific configs contain prompts that reference that ResourceId
+        boolean foundResourceSpecificPrompt = configResponse.getPromptsList().stream()
+                .anyMatch(p -> p.getResourceId().equals(myResourceId));
+
+        Assert.assertTrue(foundResourceSpecificPrompt,
+                "At least one prompt should be associated with the provided ResourceId: " + myResourceId);
+
+        System.out.println("Successfully fetched specific config for: " + myResourceId);
     }
 }

@@ -1,7 +1,5 @@
 package Tests;
 
-import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1;
-import Impactyn.Contracts.Common.V1.ImpactynContractsCommonV1;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -11,6 +9,9 @@ import Impactyn.Contracts.RuntimeService.V1.ImpactynContractsRuntimeServiceV1.Ex
 
 import Impactyn.Contracts.RuntimeService.V1.ImpactynContractsRuntimeServiceV1.GetRequest;
 import Impactyn.Contracts.RuntimeService.V1.ImpactynContractsRuntimeServiceV1.GetResponse;
+
+import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1;
+import Impactyn.Contracts.Common.V1.ImpactynContractsCommonV1;
 
 import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1.AskRequest;
 import Impactyn.Contracts.Assistants.V1.ImpactynContractsAssistantsV1.AskResponse;
@@ -196,35 +197,35 @@ public class ChatAssistantTest extends BaseTest {
         System.out.println("Full thread count: " + response.getThreadCount());
     }
 
-//    @Test(description = "Verify context-aware response using ResourceId (e.g. searching within a specific brand)")
-//    public void testAskWithContextResourceId() throws InvalidProtocolBufferException {
-//        // Resource ID representing "BRGR" brand
-//        ImpactynContractsCommonV1.ResourceId brgrContext = ImpactynContractsCommonV1.ResourceId.newBuilder()
-//                .setNamespace("BRGR_namespace")
-//                .setName("BRGR_resource")
-//                .setResourceType("Brands")
-//                .build();
-//
-//        AskRequest payload = AskRequest.newBuilder()
-//                .setMessage("List items")
-//                .setResourceId(brgrContext)
-//                .build();
-//
-//        AskResponse response = sendAskRequest(payload);
-//
-//        // Logic check: The response should ideally only contain info related to BRGR
-//        String assistantText = response.getThread(response.getThreadCount() - 1)
-//                .getAssistant().getText().getMessage();
-//
-//        System.out.println("Context Response: " + assistantText);
-//        // Assert that the response contains data or context related to the resource ID sent
-//        Assert.assertFalse(assistantText.isEmpty());
-//    }
+    @Test(description = "Verify context-aware response using ResourceId (e.g. searching within a specific brand)")
+    public void testAskWithContextResourceId() throws InvalidProtocolBufferException {
+        // Resource ID representing "BRGR" brand
+        ImpactynContractsCommonV1.ResourceId brgrContext = ImpactynContractsCommonV1.ResourceId.newBuilder()
+                .setNamespace("brgr.eg")
+                .setName("default")
+                .setResourceType("metaobjects")
+                .build();
+
+        AskRequest payload = AskRequest.newBuilder()
+                .setMessage("List items")
+                .setResourceId(brgrContext)
+                .build();
+
+        AskResponse response = sendAskRequest(payload);
+
+        // Logic check: The response should ideally only contain info related to BRGR
+        String assistantText = response.getThread(response.getThreadCount() - 1)
+                .getAssistant().getText().getMessage();
+
+        System.out.println("Context Response: " + assistantText);
+        // Assert that the response contains data or context related to the resource ID sent
+        Assert.assertFalse(assistantText.isEmpty());
+    }
 
     @Test(description = "Verify that all chats in the list have a valid title")
     public void testFetchChatsAndVerifyTitles() throws InvalidProtocolBufferException {
 
-        // 2. Build the GetRequest (Using 'GetList' as the name/argument)
+        // 2. Build the GetRequest (Using 'GetList' as the view)
         GetRequest getRequest = GetRequest.newBuilder()
                 .setApiVersion("V1")
                 .setNamespace("0d4463e99a064d852328898ae95ba59b_85cca7fbd8466397")
