@@ -18,13 +18,12 @@ public abstract class BaseTest {
         protected RuntimeServiceGrpc.RuntimeServiceBlockingStub blockingStub;
         protected RuntimeServiceGrpc.RuntimeServiceBlockingStub authenticatedStub;
 
-
         Dotenv dotenv = Dotenv.load();
-        String AUTH_TOKEN = dotenv.get("AUTH_TOKEN");
         String HOST = dotenv.get("HOST");
         String CLIENT_VERSION = dotenv.get("CLIENT_VERSION");
         String PORTStr = dotenv.get("PORT");
         int PORT = Integer.parseInt(PORTStr);
+        String API_KEY = dotenv.get("API_KEY");
         String IMPACTYN_LOCATION = dotenv.get("IMPACTYN_LOCATION");  // We simulate being in Cairo to see if we get the Egypt-specific default config
 
     @BeforeClass
@@ -41,10 +40,11 @@ public abstract class BaseTest {
     @BeforeClass
        public void setupHeaders() {
             Metadata headers = new Metadata();
-            headers.put(Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER), AUTH_TOKEN);
             headers.put(Metadata.Key.of("x-impactyn-client-version", Metadata.ASCII_STRING_MARSHALLER), CLIENT_VERSION);
             headers.put(Metadata.Key.of("x-impactyn-location", Metadata.ASCII_STRING_MARSHALLER), IMPACTYN_LOCATION);
-           authenticatedStub = blockingStub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
+            headers.put(Metadata.Key.of("X-API-Key", Metadata.ASCII_STRING_MARSHALLER), API_KEY);
+
+            authenticatedStub = blockingStub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
        }
 
     @AfterClass
