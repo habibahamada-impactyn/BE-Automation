@@ -25,27 +25,65 @@ public abstract class BaseTest {
         int PORT = Integer.parseInt(PORTStr);
         String API_KEY = dotenv.get("API_KEY");
         String IMPACTYN_LOCATION = dotenv.get("IMPACTYN_LOCATION");  // We simulate being in Cairo to see if we get the Egypt-specific default config
+        String AUTH_TOKEN = dotenv.get("AUTH_TOKEN");
 
     @BeforeClass
-       public void setup() {
-            // 1. Create a Secure Channel
+    public void setup() {
+
+        try {
+
+            // Create Secure Channel
             channel = ManagedChannelBuilder.forAddress(HOST, PORT)
                     .useTransportSecurity() // This enables SSL/TLS
                     .build();
 
-            // 2. Initialize the Stub
+            // Initialize Stub
             blockingStub = RuntimeServiceGrpc.newBlockingStub(channel);
-       }
 
-    @BeforeClass
-       public void setupHeaders() {
+            // Setup Headers
             Metadata headers = new Metadata();
-            headers.put(Metadata.Key.of("x-impactyn-client-version", Metadata.ASCII_STRING_MARSHALLER), CLIENT_VERSION);
-            headers.put(Metadata.Key.of("x-impactyn-location", Metadata.ASCII_STRING_MARSHALLER), IMPACTYN_LOCATION);
-            headers.put(Metadata.Key.of("X-API-Key", Metadata.ASCII_STRING_MARSHALLER), API_KEY);
+            headers.put(
+                    Metadata.Key.of("x-impactyn-client-version", Metadata.ASCII_STRING_MARSHALLER),
+                    CLIENT_VERSION
+            );
 
-            authenticatedStub = blockingStub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
-       }
+            headers.put(
+                    Metadata.Key.of("x-impactyn-location", Metadata.ASCII_STRING_MARSHALLER),
+                    IMPACTYN_LOCATION
+            );
+
+            headers.put(
+                    Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER),
+                    AUTH_TOKEN
+            );
+
+            authenticatedStub = blockingStub.withInterceptors(
+                    MetadataUtils.newAttachHeadersInterceptor(headers)
+            );
+
+        } catch (StatusRuntimeException e) {
+
+            if (e.getStatus().getCode() == Status.Code.PERMISSION_DENIED) {
+
+                System.out.println("Permission denied: Invalid or expired authorization token.");
+
+            }
+            else if (e.getStatus().getCode() == Status.Code.UNAUTHENTICATED) {
+
+                System.out.println("UNAUTHENTICATED: Invalid or expired authorization token.");
+
+            }
+            else {
+
+                System.out.println("gRPC Error: " + e.getStatus());
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Unexpected Error: " + e.getMessage());
+        }
+    }
 
     @AfterClass
         public void teardown() {
